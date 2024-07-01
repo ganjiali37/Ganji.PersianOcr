@@ -50,7 +50,7 @@ public class HomeController : Controller
             string tessPath = Path.Combine(_hs.WebRootPath, "tessdata");
             return Json(ProcessImage(inputfile, langs, mode, tessPath));
         }
-        catch (Exception)
+        catch (Exception e)
         {
             throw;
         }
@@ -79,7 +79,16 @@ public class HomeController : Controller
 
             // Apply thresholding
             Mat binary = new Mat();
-            CvInvoke.Threshold(gray, binary, 170, 255, ThresholdType.Binary);
+            //CvInvoke.Threshold(gray, binary, 170, 0, ThresholdType.ToZero);
+            
+            CvInvoke.AdaptiveThreshold(gray, binary, 255, AdaptiveThresholdType.MeanC, ThresholdType.Binary, 13, 8);
+            
+            //CvInvoke.Erode(binary, binary, new IntPtr(0), null, 1, BorderType.Constant, new Emgu.CV.Structure.MCvScalar());
+
+            // Perform morphological operations to remove small noises and to close gaps in text lines
+            Mat kernel = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(2, 2), new System.Drawing.Point(-1, -1));
+            CvInvoke.MorphologyEx(binary, binary, MorphOp.Dilate, kernel, new System.Drawing.Point(-1, -1), 1, BorderType.Default, new Emgu.CV.Structure.MCvScalar());
+
 
             // Save processed image (for debugging purposes)
             string processedPath = ".\\wwwroot\\img.jpg";
@@ -91,7 +100,7 @@ public class HomeController : Controller
             // Perform OCR
             string text = PerformOCR(processedPath, customConfig, tessPath);
 
-            System.IO.File.Delete(processedPath);
+            //System.IO.File.Delete(processedPath);
             return text;
         }
         catch (Exception)
