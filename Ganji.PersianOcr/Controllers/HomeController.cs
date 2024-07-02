@@ -81,13 +81,14 @@ public class HomeController : Controller
             Mat binary = new Mat();
             //CvInvoke.Threshold(gray, binary, 170, 0, ThresholdType.ToZero);
             
-            CvInvoke.AdaptiveThreshold(gray, binary, 255, AdaptiveThresholdType.MeanC, ThresholdType.Binary, 13, 8);
+            CvInvoke.AdaptiveThreshold(gray, binary, 255, AdaptiveThresholdType.GaussianC, ThresholdType.Binary, 49, 15);  //59 21
             
-            //CvInvoke.Erode(binary, binary, new IntPtr(0), null, 1, BorderType.Constant, new Emgu.CV.Structure.MCvScalar());
-
             // Perform morphological operations to remove small noises and to close gaps in text lines
-            Mat kernel = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(2, 2), new System.Drawing.Point(-1, -1));
-            CvInvoke.MorphologyEx(binary, binary, MorphOp.Dilate, kernel, new System.Drawing.Point(-1, -1), 1, BorderType.Default, new Emgu.CV.Structure.MCvScalar());
+            Mat kernel = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(2, 1), new System.Drawing.Point(0, 0));
+            //  CvInvoke.MorphologyEx(binary, binary, MorphOp.Erode, kernel, new System.Drawing.Point(-1, -1), 1, BorderType.Default, new Emgu.CV.Structure.MCvScalar());
+            
+            Mat kernel2 = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(1, 1), new System.Drawing.Point(-1, -1));
+            //CvInvoke.MorphologyEx(binary, binary, MorphOp.HitMiss, kernel2, new System.Drawing.Point(-1, -1), 1, BorderType.Default, new Emgu.CV.Structure.MCvScalar());
 
 
             // Save processed image (for debugging purposes)

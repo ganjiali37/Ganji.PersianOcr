@@ -15,9 +15,11 @@
             direction: rtl;
             text-align: right;
         }
+
         .container {
             margin-top: 50px;
         }
+
         .result-box {
             margin-top: 20px;
             white-space: pre-wrap;
@@ -27,7 +29,7 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-6 offset-md-3">
+            <div class="col-md-6">
                 <h2 class="text-center">تبدیل تصویر به متن فارسی</h2>
                 <form id="ocrForm" enctype="multipart/form-data">
                     <div class="form-group">
@@ -40,13 +42,16 @@
                 </form>
                 <div id="result" class="result-box alert alert-info" style="display: none;"></div>
             </div>
+            <div class="col-md-6 text-center">
+                <img id="processedImage" src="" alt="تصویر پردازش شده" style="display: none; max-width: 100%;" />
+            </div>
         </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#ocrForm').on('submit', function(e) {
+        $(document).ready(function () {
+            $('#ocrForm').on('submit', function (e) {
                 e.preventDefault();
                 var formData = new FormData(this);
 
@@ -56,10 +61,12 @@
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function(data) {
+                    success: function (data) {
                         $('#result').html(data).show();
+                        var timestamp = new Date().getTime();
+                        $('#processedImage').attr('src', '/img.jpg?' + timestamp).show();
                     },
-                    error: function() {
+                    error: function () {
                         $('#result').html('خطا در پردازش فایل. لطفا دوباره تلاش کنید.').show();
                     }
                 });
