@@ -81,7 +81,7 @@ public class HomeController : Controller
             Mat binary = new Mat();
             //CvInvoke.Threshold(gray, binary, 170, 0, ThresholdType.ToZero);
             
-            CvInvoke.AdaptiveThreshold(gray, binary, 255, AdaptiveThresholdType.GaussianC, ThresholdType.Binary, 49, 15);  //59 21
+            CvInvoke.AdaptiveThreshold(gray, binary, 255, AdaptiveThresholdType.GaussianC, ThresholdType.Binary, 59, 21);  //59 21
             
             // Perform morphological operations to remove small noises and to close gaps in text lines
             Mat kernel = CvInvoke.GetStructuringElement(ElementShape.Rectangle, new System.Drawing.Size(2, 1), new System.Drawing.Point(0, 0));
