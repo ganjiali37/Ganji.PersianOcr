@@ -1,1 +1,1 @@
-# Ganji.PersianOcr
+# PersianOcr
